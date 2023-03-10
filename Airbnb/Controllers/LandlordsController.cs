@@ -31,7 +31,7 @@ namespace Airbnb.Controllers
 
         // GET: api/Landlords/5
         [HttpGet("{id}")]
-        public  ActionResult<Landlord> GetLandlord(int id)
+        public ActionResult<Landlord> GetLandlord(int id)
         {
             return _landlordService.GetLandlord(id);
         }
