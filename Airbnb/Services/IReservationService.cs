@@ -1,6 +1,8 @@
-﻿namespace Airbnb.Services
+﻿using Airbnb.Models.DTO;
+
+namespace Airbnb.Services;
+
+public interface IReservationService
 {
-    public interface IReservationService
-    {
-    }
+    Task<ReservationResponseDTO> CreateReservation(ReservationRequestDTO reservationRequest);
 }

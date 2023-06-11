@@ -4,6 +4,7 @@ using Airbnb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Migrations
 {
     [DbContext(typeof(AirbnbContext))]
-    partial class AirbnbContextModelSnapshot : ModelSnapshot
+    [Migration("20230610124202_changed isCover to true for landlords")]
+    partial class changedisCovertotrueforlandlords
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,29 +51,6 @@ namespace Airbnb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "MrBean@gmail.com",
-                            FirstName = "Mr",
-                            LastName = "Bean"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "NapoleonBonaparte@gmail.com",
-                            FirstName = "Napoleon",
-                            LastName = "Bonaparte"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "AliG@gmail.com",
-                            FirstName = "Ali",
-                            LastName = "G"
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Image", b =>
@@ -523,35 +503,6 @@ namespace Airbnb.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerId = 1,
-                            Discount = 0f,
-                            EndDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 1,
-                            StartDate = new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerId = 2,
-                            Discount = 0f,
-                            EndDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 3,
-                            StartDate = new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CustomerId = 3,
-                            Discount = 0f,
-                            EndDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 5,
-                            StartDate = new DateTime(2023, 11, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Image", b =>
