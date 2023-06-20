@@ -4,6 +4,7 @@ using Airbnb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,16 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Migrations
 {
     [DbContext(typeof(AirbnbContext))]
-    partial class AirbnbContextModelSnapshot : ModelSnapshot
+    [Migration("20230316210735_Deleted Avatar")]
+    partial class DeletedAvatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -48,22 +48,6 @@ namespace Airbnb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "mary.jane@example.com",
-                            FirstName = "Mary",
-                            LastName = "Jane"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "john.doe@example.com",
-                            FirstName = "John",
-                            LastName = "Doe"
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Image", b =>
@@ -89,50 +73,6 @@ namespace Airbnb.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Images");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsCover = true,
-                            LocationId = 1,
-                            Url = "https://media.architecturaldigest.com/photos/5a30296738bb817b7ffe1b4b/3:2/w_1023,h_682,c_limit/Airbnb_Georgia3.jpg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsCover = false,
-                            LocationId = 2,
-                            Url = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsCover = true,
-                            LocationId = 2,
-                            Url = "https://www.myglobalviewpoint.com/wp-content/uploads/2020/11/Best-Airbnbs-in-the-World-Featured-Image.jpg"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsCover = false,
-                            LocationId = 1,
-                            Url = "https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture.jpg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsCover = false,
-                            LocationId = 1,
-                            Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Ranch_style_home_in_Salinas%2C_California.JPG/640px-Ranch_style_home_in_Salinas%2C_California.JPG"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsCover = false,
-                            LocationId = 2,
-                            Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Katsura_Imperial_Villa_in_Spring.jpg/640px-Katsura_Imperial_Villa_in_Spring.jpg"
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Landlord", b =>
@@ -163,24 +103,6 @@ namespace Airbnb.Migrations
                         .IsUnique();
 
                     b.ToTable("Landlords");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Age = 33,
-                            AvatarId = 4,
-                            FirstName = "Gustav",
-                            LastName = "Maher"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Age = 20,
-                            AvatarId = 2,
-                            FirstName = "Mahatma",
-                            LastName = "Ghandi"
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Location", b =>
@@ -198,7 +120,7 @@ namespace Airbnb.Migrations
                     b.Property<int>("FeaturesList")
                         .HasColumnType("int");
 
-                    b.Property<int>("LandlordId")
+                    b.Property<int?>("LandlordId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberOfGuests")
@@ -226,34 +148,6 @@ namespace Airbnb.Migrations
                     b.HasIndex("LandlordId");
 
                     b.ToTable("Locations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "een betoverend huis omringd door bloemen, rustig, comfortabel en vol natuurlijk licht.",
-                            FeaturesList = 20,
-                            LandlordId = 1,
-                            NumberOfGuests = 4,
-                            PricePerDay = 200f,
-                            Rooms = 1,
-                            SubTitle = "Waar de zon continu schijnt",
-                            Title = "Het bloemensteeltje",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "een charmant huis, levendig en kleurrijk, met een vrolijke sfeer, omgeven door speelse tuinen.",
-                            FeaturesList = 36,
-                            LandlordId = 2,
-                            NumberOfGuests = 6,
-                            PricePerDay = 240f,
-                            Rooms = 3,
-                            SubTitle = "Te gek uitzicht",
-                            Title = "De Petteflet",
-                            Type = 4
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Reservation", b =>
@@ -286,44 +180,6 @@ namespace Airbnb.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerId = 1,
-                            Discount = 0.5f,
-                            EndDate = new DateTime(2023, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 1,
-                            StartDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerId = 2,
-                            Discount = 0.1f,
-                            EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 2,
-                            StartDate = new DateTime(2023, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CustomerId = 1,
-                            Discount = 0.6f,
-                            EndDate = new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 1,
-                            StartDate = new DateTime(2023, 7, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CustomerId = 2,
-                            Discount = 0.5f,
-                            EndDate = new DateTime(2023, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 2,
-                            StartDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Airbnb.Models.Image", b =>
@@ -350,9 +206,7 @@ namespace Airbnb.Migrations
                 {
                     b.HasOne("Airbnb.Models.Landlord", "Landlord")
                         .WithMany("Locations")
-                        .HasForeignKey("LandlordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LandlordId");
 
                     b.Navigation("Landlord");
                 });

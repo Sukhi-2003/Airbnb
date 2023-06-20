@@ -1,42 +1,55 @@
-﻿//Sukhjit Singh s1171953 
+﻿//Sukhjit Singh s1171953
+//Dit is de laatste versie...
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Airbnb.Data;
-using Airbnb.Services;
-using Airbnb.Repositories;
+using System.Text.Json.Serialization;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Airbnb.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AirbnbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AirbnbContext") ?? throw new InvalidOperationException("Connection string 'AirbnbContext' not found.")));
 
-// Add services to the container.
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("AirbnbContext") 
+        ?? throw new InvalidOperationException("Connection string 'AirbnbContext' not found."))
+    );
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
-builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<ILocationRepository, LocationsRepository>();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-builder.Services.AddScoped<ILandlordService, LandlordService>();
-builder.Services.AddScoped<ILandlordRepository, LandlordRepository>();
-
+// I learned in my comakership how to use the IServiceCollection methods to simplify my program.cs
+// by hiding adding/adjusting services by just calling a method that does that for you
+builder.Services.AddAirbnbServices();
+builder.Services.AddApiConfiguration();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var description in provider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint(
+                    $"/swagger/{description.GroupName}/swagger.json",
+                    description.ApiVersion.ToString()
+                );
+        }
+    });
     app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin());
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
