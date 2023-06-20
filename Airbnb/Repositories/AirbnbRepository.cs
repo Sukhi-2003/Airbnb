@@ -2,41 +2,59 @@
 using Airbnb.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Airbnb.Repositories
+namespace Airbnb.Repositories;
+
+public class AirbnbRepository : IAirbnbRepository
 {
-    public class AirbnbRepository : IAirbnbRepository
+    private readonly AirbnbContext _context;
+    public AirbnbRepository(AirbnbContext context)
     {
-        private readonly AirbnbContext _context;
-        public AirbnbRepository(AirbnbContext context)
+        _context = context;
+    }
+
+    public async Task CreateReservation(Reservation reservation, CancellationToken cancellationToken)
+    {
+        await _context.Reservations.AddAsync(reservation, cancellationToken);
+
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Customer>> GetAllCustomers(CancellationToken cancellationToken)
+    {
+        return await _context.Customers.ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Location>> GetAllLocations(CancellationToken cancellationToken)
+    {
+        return await _context.Locations.ToListAsync(cancellationToken); 
+    }
+
+    public async Task<Customer> GetCustomer(string customerEmail, CancellationToken cancellationToken)
+    {
+           
+        var customer = await _context.Customers.Where(customer => customer.Email.Equals(customerEmail)).FirstOrDefaultAsync(cancellationToken);
+
+        if(customer == null)
         {
-            _context = context;
+            return null;
         }
-
-        public void CreateReservation(Reservation reservation)
+        else
         {
-            _context.Reservations.Add(reservation);
-
-            _context.SaveChangesAsync();
+            return customer;
         }
+    }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+    public async Task<Location> GetLocation(int locationId, CancellationToken cancellationToken)
+    {
+        var location = await _context.Locations.FindAsync(locationId, cancellationToken);
+
+        if(location == null)
         {
-            return await _context.Customers.ToListAsync();
+            return null;
         }
-
-        public async Task<IEnumerable<Location>> GetAllLocations()
+        else
         {
-            return await _context.Locations.ToListAsync();
-        }
-
-        public async Task<Customer> GetCustomer(string customerEmail)
-        {
-            return await _context.Customers.Where(customer => customer.Email.Equals(customerEmail)).FirstAsync();
-        }
-
-        public async Task<Location> GetLocation(int locationId)
-        {
-            return await _context.Locations.FindAsync(locationId);
+            return location;
         }
     }
 }

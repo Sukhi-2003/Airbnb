@@ -3,32 +3,31 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Airbnb.Options
+namespace Airbnb.Options;
+
+public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
-    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+    private readonly IApiVersionDescriptionProvider _provider;
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
     {
-        private readonly IApiVersionDescriptionProvider _provider;
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+        _provider = provider;
+    }
+    public void Configure(SwaggerGenOptions options)
+    {
+        foreach (var description in _provider.ApiVersionDescriptions)
         {
-            _provider = provider;
+            options.SwaggerDoc(description.GroupName, CreateVersionInfo(description));
         }
-        public void Configure(SwaggerGenOptions options)
-        {
-            foreach (var description in _provider.ApiVersionDescriptions)
-            {
-                options.SwaggerDoc(description.GroupName, CreateVersionInfo(description));
-            }
-        }
+    }
 
-        private OpenApiInfo CreateVersionInfo(ApiVersionDescription description)
+    private OpenApiInfo CreateVersionInfo(ApiVersionDescription description)
+    {
+        var info = new OpenApiInfo
         {
-            var info = new OpenApiInfo
-            {
-                Title = "Airbnb Api",
-                Version = description.ApiVersion.ToString()
-            };
+            Title = "Airbnb Api",
+            Version = description.ApiVersion.ToString()
+        };
 
-            return info;
-        }
+        return info;
     }
 }

@@ -4,6 +4,7 @@ using Airbnb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airbnb.Migrations
 {
     [DbContext(typeof(AirbnbContext))]
-    partial class AirbnbContextModelSnapshot : ModelSnapshot
+    [Migration("20230612122417_added different seeding")]
+    partial class addeddifferentseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,15 +56,15 @@ namespace Airbnb.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "mary.jane@example.com",
-                            FirstName = "Mary",
-                            LastName = "Jane"
+                            Email = "john.doe@example.com",
+                            FirstName = "John",
+                            LastName = "Doe"
                         },
                         new
                         {
                             Id = 2,
-                            Email = "john.doe@example.com",
-                            FirstName = "John",
+                            Email = "jane.doe@example.com",
+                            FirstName = "Jane",
                             LastName = "Doe"
                         });
                 });
@@ -102,7 +105,7 @@ namespace Airbnb.Migrations
                         {
                             Id = 2,
                             IsCover = false,
-                            LocationId = 2,
+                            LocationId = 1,
                             Url = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
                         },
                         new
@@ -116,22 +119,8 @@ namespace Airbnb.Migrations
                         {
                             Id = 4,
                             IsCover = false,
-                            LocationId = 1,
-                            Url = "https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture.jpg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsCover = false,
-                            LocationId = 1,
-                            Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Ranch_style_home_in_Salinas%2C_California.JPG/640px-Ranch_style_home_in_Salinas%2C_California.JPG"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsCover = false,
                             LocationId = 2,
-                            Url = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Katsura_Imperial_Villa_in_Spring.jpg/640px-Katsura_Imperial_Villa_in_Spring.jpg"
+                            Url = "https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture.jpg"
                         });
                 });
 
@@ -169,17 +158,17 @@ namespace Airbnb.Migrations
                         {
                             Id = 1,
                             Age = 33,
-                            AvatarId = 4,
-                            FirstName = "Gustav",
-                            LastName = "Maher"
+                            AvatarId = 1,
+                            FirstName = "Peter-Jan",
+                            LastName = "Balkenende"
                         },
                         new
                         {
                             Id = 2,
                             Age = 20,
                             AvatarId = 2,
-                            FirstName = "Mahatma",
-                            LastName = "Ghandi"
+                            FirstName = "Jan",
+                            LastName = "de Man"
                         });
                 });
 
@@ -231,28 +220,28 @@ namespace Airbnb.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "een betoverend huis omringd door bloemen, rustig, comfortabel en vol natuurlijk licht.",
-                            FeaturesList = 20,
+                            Description = "This modern and stylish apartment is located right in the heart of the city. With its spacious living area, fully equipped kitchen, and luxurious bathroom, it's the perfect home away from home.",
+                            FeaturesList = 28,
                             LandlordId = 1,
                             NumberOfGuests = 4,
-                            PricePerDay = 200f,
-                            Rooms = 1,
-                            SubTitle = "Waar de zon continu schijnt",
-                            Title = "Het bloemensteeltje",
+                            PricePerDay = 75f,
+                            Rooms = 2,
+                            SubTitle = "Lekker veel ruimte",
+                            Title = "De Boerenhoeve",
                             Type = 0
                         },
                         new
                         {
                             Id = 2,
-                            Description = "een charmant huis, levendig en kleurrijk, met een vrolijke sfeer, omgeven door speelse tuinen.",
-                            FeaturesList = 36,
+                            Description = "Escape the hustle and bustle of the city and unwind in this beautiful cottage surrounded by nature. With its cozy fireplace, comfortable bedrooms, and fully equipped kitchen, you'll have everything you need for a relaxing and enjoyable stay.",
+                            FeaturesList = 52,
                             LandlordId = 2,
                             NumberOfGuests = 6,
-                            PricePerDay = 240f,
+                            PricePerDay = 100f,
                             Rooms = 3,
                             SubTitle = "Te gek uitzicht",
-                            Title = "De Petteflet",
-                            Type = 4
+                            Title = "Frankie's Penthouse",
+                            Type = 1
                         });
                 });
 
@@ -292,7 +281,7 @@ namespace Airbnb.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            Discount = 0.5f,
+                            Discount = 0.1f,
                             EndDate = new DateTime(2023, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocationId = 1,
                             StartDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -301,27 +290,27 @@ namespace Airbnb.Migrations
                         {
                             Id = 2,
                             CustomerId = 2,
-                            Discount = 0.1f,
+                            Discount = 0f,
                             EndDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocationId = 2,
-                            StartDate = new DateTime(2023, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             CustomerId = 1,
-                            Discount = 0.6f,
+                            Discount = 0.2f,
                             EndDate = new DateTime(2023, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocationId = 1,
-                            StartDate = new DateTime(2023, 7, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2023, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             CustomerId = 2,
-                            Discount = 0.5f,
+                            Discount = 0.15f,
                             EndDate = new DateTime(2023, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LocationId = 2,
+                            LocationId = 1,
                             StartDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });

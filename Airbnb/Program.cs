@@ -2,8 +2,6 @@
 //Dit is de laatste versie...
 using Microsoft.EntityFrameworkCore;
 using Airbnb.Data;
-using Airbnb.Services;
-using Airbnb.Repositories;
 using System.Text.Json.Serialization;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -21,37 +19,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-builder.Services.AddScoped<IAirbnbRepository, AirbnbRepository>();
-builder.Services.AddScoped<ISearchService, SearchService>();
-builder.Services.AddScoped<IReservationService, ReservationService>();
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
-
-builder.Services.AddAutoMapper(typeof(Program));
-
-builder.Services.AddApiVersioning(config =>
-{
-    config.AssumeDefaultVersionWhenUnspecified = true;
-});
-
-builder.Services.AddVersionedApiExplorer(setup => 
-{
-    //setup.GroupNameFormat = "'v'VVV";
-    setup.SubstituteApiVersionInUrl = true;
-});
+// I learned in my comakership how to use the IServiceCollection methods to simplify my program.cs
+// by hiding adding/adjusting services by just calling a method that does that for you
+builder.Services.AddAirbnbServices();
+builder.Services.AddApiConfiguration();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

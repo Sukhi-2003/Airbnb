@@ -12,58 +12,38 @@ public class ReservationService : IReservationService
     {
         _repository = repository;
     }
-    public async Task<ReservationResponseDTO> CreateReservation(ReservationRequestDTO reservationRequest)
+    public async Task<ReservationResponseDTO> CreateReservation(ReservationRequestDTO reservationRequest, CancellationToken cancellationToken)
     {
-        var customer = await _repository.GetCustomer(reservationRequest.Email);
-        var location = await _repository.GetLocation(reservationRequest.LocationId);
+        var customer = await _repository.GetCustomer(reservationRequest.Email, cancellationToken);
+
+        var location = await _repository.GetLocation(reservationRequest.LocationId, cancellationToken);
         Customer newCustomer;
 
-        if (customer == null)
+
+        newCustomer = customer ?? new Customer
         {
-            newCustomer = new Customer
-            {
-                FirstName = reservationRequest.FirstName,
-                LastName = reservationRequest.LastName,
-                Email = reservationRequest.Email,
-            };
+            FirstName = reservationRequest.FirstName,
+            LastName = reservationRequest.LastName,
+            Email = reservationRequest.Email,
+        };
 
-            _repository.CreateReservation(
-            new Reservation
-            {
-                Location = location,
-                Customer = newCustomer,
-                Discount = (float)reservationRequest.Discount,
-                StartDate = reservationRequest.StartDate,
-                EndDate = reservationRequest.EndDate,
-            });
-
-            return new ReservationResponseDTO
-            {
-                LocationName = location.Title,
-                CustomerName = newCustomer.FirstName,
-                Price = location.PricePerDay,
-                Discount = (float)reservationRequest.Discount
-            };
-        }
-        else
+        await _repository.CreateReservation(
+        new Reservation
         {
-            _repository.CreateReservation(
-            new Reservation
-            {
-                Location = location,
-                Customer = customer,
-                Discount = (float)reservationRequest.Discount,
-                StartDate = reservationRequest.StartDate,
-                EndDate = reservationRequest.EndDate,
-            });
+            Location = location,
+            Customer = customer ?? newCustomer,
+            Discount = reservationRequest.Discount ?? 0.0f,
+            StartDate = reservationRequest.StartDate,
+            EndDate = reservationRequest.EndDate,
+        },
+        cancellationToken) ;
 
-            return new ReservationResponseDTO
-            {
-                LocationName = location.Title,
-                CustomerName = customer.FirstName,
-                Price = location.PricePerDay,
-                Discount = (float)reservationRequest.Discount
-            };
-        }
-    }
+        return new ReservationResponseDTO
+        {
+            LocationName = location.Title,
+            CustomerName = customer == null ? newCustomer.FirstName : customer.FirstName ,
+            Price = location.PricePerDay,
+            Discount = reservationRequest.Discount ?? 0.0f
+        };
+    }   
 }

@@ -1,12 +1,11 @@
-﻿namespace Airbnb.Models.DTO
-{
-    public class UnAvailableDatesReponseDTO
-    {
-        public List<DateTime> UnAvailableDates { get; set; }
+﻿namespace Airbnb.Models.DTO;
 
-        public UnAvailableDatesReponseDTO()
-        {
-            UnAvailableDates = new();
-        }
+public class UnAvailableDatesReponseDTO
+{
+    public List<DateTime> UnAvailableDates { get; set; }
+
+    public UnAvailableDatesReponseDTO()
+    {
+        UnAvailableDates = new();
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Airbnb.Models;
 using Airbnb.Models.DTO;
 
-namespace Airbnb.Services
+namespace Airbnb.Services;
+
+public interface ISearchService
 {
-    public interface ISearchService
-    {
-        public Task<IEnumerable<Location>> GetLocations();
-        public Task<UnAvailableDatesReponseDTO> GetUnAvailableDates(int locationId);
-    }
+    public Task<IEnumerable<Location>> GetLocations(CancellationToken cancellationToken);
+    public Task<UnAvailableDatesReponseDTO> GetUnAvailableDates(int locationId, CancellationToken cancellationToken);
+    public Task<IEnumerable<LocationDTOWithPrice>> Search(LocationRequestDTO? locationRequest, CancellationToken cancellationToken);
 }
